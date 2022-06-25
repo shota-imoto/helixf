@@ -1,0 +1,32 @@
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/shota-imoto/helixf/src/server/handlers"
+	"github.com/shota-imoto/helixf/src/server/middleware"
+)
+
+func main() {
+	r := mux.NewRouter()
+	r.HandleFunc("/regular_schedule_template", handlers.PostRegularScheduleTemplateHandler).Methods(http.MethodPost)
+	r.HandleFunc("/groups/register", handlers.RegisterGroups).Methods(http.MethodPost)
+	r.HandleFunc("/callback", handlers.LineCallbackHandler)
+	r.HandleFunc("/authenticate", handlers.LineAuthenticationHandler)  // AuthorizatonCode取得
+	r.HandleFunc("/assert_auth", handlers.AssertAuthenticationHandler) // AuthorizationCode検証＆AuthorizationToken取得
+
+	r.HandleFunc("/regular_schedule_template", handlers.CorsHandler).Methods(http.MethodOptions)
+	r.HandleFunc("/groups/register", handlers.CorsHandler).Methods(http.MethodOptions)
+	// r.Use(mux.CORSMethodMiddleware(r))
+	r.Use(middleware.SetCorsHandler)
+	r.Use(middleware.GetAuthUser)
+
+	srv := &http.Server{
+		Handler: r,
+		Addr:    "127.0.0.1:8080",
+	}
+
+	log.Fatal(srv.ListenAndServe())
+}
