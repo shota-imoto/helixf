@@ -22,9 +22,14 @@ func FindOrCreateGroupByGroupId(group_id string) (line_model.LineGroup, error) {
 	return group, err
 }
 
-// func FindOrCreateUserByIdToken() {
-
-// }
+func GetListGroups(user helixf_user.User) ([]line_model.LineGroup, error) {
+	var groups []line_model.LineGroup
+	result := db.Db.Joins("join line_group_user_maps on line_group_user_maps.line_group_id = line_groups.id", db.Db.Where(&line_model.LineGroupUserMap{UserId: user.Id})).Find(&groups)
+	if result.Error != nil {
+		return groups, result.Error
+	}
+	return groups, nil
+}
 
 func JoinGroup(group line_model.LineGroup, user helixf_user.User) {
 	group_map := line_model.LineGroupUserMap{LineGroupId: group.Id, UserId: user.Id}

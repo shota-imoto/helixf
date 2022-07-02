@@ -13,12 +13,15 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/regular_schedule_template", handlers.PostRegularScheduleTemplateHandler).Methods(http.MethodPost)
 	r.HandleFunc("/groups/register", handlers.RegisterGroups).Methods(http.MethodPost)
+	r.HandleFunc("/groups", handlers.GetListGroups).Methods(http.MethodGet)
 	r.HandleFunc("/callback", handlers.LineCallbackHandler)
 	r.HandleFunc("/authenticate", handlers.LineAuthenticationHandler)  // AuthorizatonCode取得
 	r.HandleFunc("/assert_auth", handlers.AssertAuthenticationHandler) // AuthorizationCode検証＆AuthorizationToken取得
 
+	// CORSのpreflightリクエストの受諾が必要なパスはこちらに追加すること
 	r.HandleFunc("/regular_schedule_template", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups/register", handlers.CorsHandler).Methods(http.MethodOptions)
+	r.HandleFunc("/groups", handlers.CorsHandler).Methods(http.MethodOptions)
 	// r.Use(mux.CORSMethodMiddleware(r))
 	r.Use(middleware.SetCorsHandler)
 	r.Use(middleware.GetAuthUser)

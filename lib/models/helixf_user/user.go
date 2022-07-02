@@ -5,11 +5,9 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/shota-imoto/helixf/lib/utils/line"
-	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
 	Id     uint   `gorm:"primaryKey" sql:"type:uint"`
 	Name   string `sql:"type:string"`
 	LineId string `sql:"type:string"`

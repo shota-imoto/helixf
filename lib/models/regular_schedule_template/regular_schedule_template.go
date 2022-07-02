@@ -7,12 +7,9 @@ import (
 
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 	"github.com/shota-imoto/helixf/lib/utils/schedule"
-
-	"gorm.io/gorm"
 )
 
 type RegularScheduleTemplate struct {
-	gorm.Model
 	Id              uint    `gorm:"primaryKey" sql:"type:uint"`
 	Hour            int     `sql:"type:int" json:"hour,string"`
 	Day             int     `sql:"type:int" json:"day,string"`

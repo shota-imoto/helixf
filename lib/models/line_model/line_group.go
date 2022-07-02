@@ -7,15 +7,13 @@ import (
 	"os"
 
 	"github.com/shota-imoto/helixf/lib/utils/line"
-	"gorm.io/gorm"
 )
 
 type LineGroup struct {
-	gorm.Model
-	Id         uint   `gorm:"primaryKey" sql:"type:uint"`
-	GroupId    string `sql:"type:string,autoIncrement:false"`
-	GroupName  string `sql:"type:string"`
-	PictureUrl string `sql:"type:string"`
+	Id         uint   `gorm:"primaryKey" sql:"type:uint" json:"id,int"`
+	GroupId    string `sql:"type:string,autoIncrement:false" json:"group_id,string"`
+	GroupName  string `sql:"type:string" json:"group_name,string"`
+	PictureUrl string `sql:"type:string" json:"picture_url,string"`
 }
 
 type LineGroupUserMap struct {

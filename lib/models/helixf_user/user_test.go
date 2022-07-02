@@ -11,7 +11,7 @@ func TestBuildUserByIdToken(t *testing.T) {
 	lineId := "line_id"
 
 	parser := &helixf_user.ParseStruct{Parser: &helixf_user.DummyParser{Name: userName, LineId: lineId}}
-	user, err := parser.BuildUserByIdToken("token")
+	user, err := parser.BuildUserByIdToken()
 
 	if err != nil {
 		t.Error("raise error: ", err)
