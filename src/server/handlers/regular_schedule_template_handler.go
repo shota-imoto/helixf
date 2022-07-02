@@ -25,9 +25,7 @@ func PostRegularScheduleTemplateHandler(w http.ResponseWriter, r *http.Request) 
 	var template regular_schedule_template.RegularScheduleTemplate
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(reqBody, &template)
-	fmt.Println(string(reqBody))
 	if err != nil {
-		fmt.Println("unmarshal error")
 		supports.ErrorHandler(w, r, err)
 		return
 	}

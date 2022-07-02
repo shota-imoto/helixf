@@ -9,7 +9,7 @@ type AuthenticationProps = {
 export const helixfCookieName:string = 'helixf-cookie'
 
 const Authorization:React.FC<AuthenticationProps> = ({children}) => {
-	const [cookies, setCookie] = useCookies([helixfCookieName]);
+	const [_, setCookie] = useCookies([helixfCookieName]);
 	const location = useLocation();
 
 	const query = new URLSearchParams(location.search);
@@ -19,13 +19,16 @@ const Authorization:React.FC<AuthenticationProps> = ({children}) => {
 		setCookie('authorization', token)
 	}
 
-	console.log("Authorization")
+	// useCookieは呼び出し時点のcookieの状態のみgetできるようにする
+	// setCookie後のcookieを取得したいので、再度useCookiesを呼び出す
+	const [cookies] = useCookies([helixfCookieName]);
+
 
 	if (!cookies.authorization) {
-		console.log(backendHost + "authenticate?redirect_path=" + location.pathname.slice(1) + "&query=" +location.search)
 		window.location.href = backendHost + "authenticate?redirect_path=" + location.pathname.slice(1) + "&query=" + location.search;
 		return null;
 	}
+
 
 	return (
 		<>{children}</>

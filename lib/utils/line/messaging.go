@@ -36,6 +36,7 @@ func (client CheckMenberClient) CheckMemberURL() string {
 }
 
 func (client CheckMenberClient) Do() (CheckMemberResponse, error) {
+	fmt.Println("Called check member url request: ", client)
 	req, err := http.NewRequest("GET", client.CheckMemberURL(), nil)
 
 	if err != nil {
@@ -44,7 +45,6 @@ func (client CheckMenberClient) Do() (CheckMemberResponse, error) {
 	req.Header.Set("Authorization", "Bearer "+helixf_env.ChannelAccessToken)
 	c := new(http.Client)
 	res, err := c.Do(req)
-	fmt.Println(0)
 
 	if err != nil {
 		return CheckMemberResponse{}, nil
@@ -56,13 +56,10 @@ func (client CheckMenberClient) Do() (CheckMemberResponse, error) {
 	if err != nil {
 		return CheckMemberResponse{}, nil
 	}
-	fmt.Println(22)
-	fmt.Println("Bearer " + helixf_env.ChannelAccessToken)
 
 	if response.Message != "" {
 		return CheckMemberResponse{}, errors.New(response.Message)
 	}
-	fmt.Println(33)
 
 	return response, nil
 }

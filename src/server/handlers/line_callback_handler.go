@@ -32,7 +32,6 @@ func LineCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, event := range events {
-		fmt.Println(event.Type)
 		if event.Type == linebot.EventTypeJoin {
 			err := JoinCallback(w, *event)
 			if err != nil {
@@ -142,8 +141,6 @@ func AssertAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func JoinCallback(w http.ResponseWriter, event linebot.Event) error {
-	fmt.Println("join!")
-
 	message := "下記のURLを開くとWebブラウザから設定が行えるようになります。\n" + domain.FrontendUrl + "/groups?group_id=" + event.Source.GroupID
 	bot, err := linebot.New(os.Getenv("LINE_SECRET"), os.Getenv("LINE_ACCESS_TOKEN"))
 	if err != nil {

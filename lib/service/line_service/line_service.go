@@ -1,8 +1,6 @@
 package line_service
 
 import (
-	"fmt"
-
 	"github.com/shota-imoto/helixf/lib/db"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
 )
@@ -39,8 +37,7 @@ func FindOrCreateUserByIdToken(parser *helixf_user.ParseStruct) (helixf_user.Use
 			return helixf_user.User{}, err
 		}
 
-		result := db.Db.Create(&user)
-		fmt.Println(result.RowsAffected, result.Error)
+		db.Db.Create(&user)
 	}
 
 	return user, nil

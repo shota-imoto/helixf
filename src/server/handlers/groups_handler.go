@@ -20,7 +20,6 @@ func RegisterGroups(w http.ResponseWriter, r *http.Request) {
 
 	// ユーザーがグループに所属しているか確認する
 	reqBody, err := ioutil.ReadAll(r.Body)
-
 	if err != nil {
 		supports.ErrorHandler(w, r, err)
 		return
@@ -34,11 +33,14 @@ func RegisterGroups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_, err = client.Do()
+	fmt.Println(3)
+	fmt.Println("error", err)
 
 	if err != nil {
 		supports.ErrorHandler(w, r, err)
 		return
 	}
+	fmt.Println(4)
 
 	group, err := line_service.FindOrCreateGroupByGroupId(client.GroupId)
 
@@ -46,6 +48,7 @@ func RegisterGroups(w http.ResponseWriter, r *http.Request) {
 		supports.ErrorHandler(w, r, err)
 		return
 	}
+	fmt.Println(5)
 
 	line_service.JoinGroup(group, user)
 

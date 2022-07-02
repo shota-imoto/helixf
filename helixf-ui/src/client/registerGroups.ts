@@ -16,7 +16,6 @@ const registerGroups = (props: registerGroupsProps) => {
 		headers: postHeader(props.authorization),
 		body: JSON.stringify(body)
 	}
-	console.log(111111)
 
 	fetch(urlHost + 'groups/register', data).then((response) => {
 		if (response.status === 401) {

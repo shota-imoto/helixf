@@ -1,8 +1,6 @@
 package line_service
 
 import (
-	"fmt"
-
 	"github.com/shota-imoto/helixf/lib/db"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
@@ -18,7 +16,6 @@ func FindOrCreateGroupByGroupId(group_id string) (line_model.LineGroup, error) {
 	err := group.GetFromLineDatabase()
 
 	if err == nil {
-		fmt.Println(group)
 		db.Db.FirstOrCreate(&group)
 	}
 

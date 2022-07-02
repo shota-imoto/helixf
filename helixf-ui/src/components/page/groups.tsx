@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie"
 
 import registerGroups from '../../client/registerGroups'
 import { helixfCookieName } from './authentication'
+import { Group } from '../model/group'
 
 const GroupsIndex = () => {
 	console.log('GroupsIndex')
@@ -18,8 +19,17 @@ const GroupsIndex = () => {
 		}
 	}, [])
 
+	const groups: Group[] = []
+
+	useEffect(() => {
+
+	})
+
 	return (
-		<div>groups#index</div>
+		<>
+			{ groups.length ? <div>groups#index exists</div>:<div>groups#index not exists</div>}
+
+		</>
 	)
 }
 

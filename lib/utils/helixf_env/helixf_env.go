@@ -2,6 +2,7 @@ package helixf_env
 
 import (
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -11,6 +12,8 @@ var ChannelAccessToken string = os.Getenv("LINE_ACCESS_TOKEN")
 var UrlHost string = os.Getenv("URL_HOST")
 
 func init() {
+	fmt.Println(UrlHost)
+
 	HelixfEnv = os.Getenv("HELIXF_ENV")
 	if HelixfEnv == "" {
 		HelixfEnv = "development"
