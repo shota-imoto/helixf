@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 
+// page
+import RegularScheduleTemplateConfig from './components/page/config';
+import Authentication from './components/page/authentication';
+import GroupsIndex from './components/page/groups';
+import GroupPage from './components/page/group';
+
+// context
+import { GroupsContextProvider } from './context/groups'
+
+
+
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        <Routes>
+          <Route path="/config" element={
+            <Authentication>
+              <RegularScheduleTemplateConfig />
+            </Authentication>
+          } />
+          <Route path="/groups" element={
+            <Authentication>
+              <GroupsContextProvider>
+                <GroupsIndex/>
+              </GroupsContextProvider>
+            </Authentication>
+          } />
+          <Route path="/group/:id" element={
+            <Authentication>
+              <GroupsContextProvider>
+                <GroupPage/>
+              </GroupsContextProvider>
+            </Authentication>
+          }/>
+        </Routes>
+    </BrowserRouter>
   );
 }
 
