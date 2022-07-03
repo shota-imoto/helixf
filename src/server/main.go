@@ -14,6 +14,7 @@ func main() {
 	r.HandleFunc("/regular_schedule_template", handlers.PostRegularScheduleTemplateHandler).Methods(http.MethodPost)
 	r.HandleFunc("/groups/register", handlers.RegisterGroups).Methods(http.MethodPost)
 	r.HandleFunc("/groups", handlers.GetListGroups).Methods(http.MethodGet)
+	r.HandleFunc("/groups/{id}", handlers.GetGroup).Methods(http.MethodGet)
 	r.HandleFunc("/callback", handlers.LineCallbackHandler)
 	r.HandleFunc("/authenticate", handlers.LineAuthenticationHandler)  // AuthorizatonCode取得
 	r.HandleFunc("/assert_auth", handlers.AssertAuthenticationHandler) // AuthorizationCode検証＆AuthorizationToken取得

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
 	"github.com/shota-imoto/helixf/lib/service/line_service"
@@ -69,10 +70,13 @@ func GetListGroups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := GetListGroupsResponse{groups}
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
 
+	response := GetListGroupsResponse{groups}
 	response_json, err := json.Marshal(response)
-	fmt.Println(string(response_json))
 
 	if err != nil {
 		supports.ErrorHandler(w, r, err)
@@ -80,4 +84,29 @@ func GetListGroups(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write(response_json)
 	w.WriteHeader(200)
+}
+
+type GetGroupRequest struct {
+	GroupId int
+}
+
+func GetGroup(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("get group")
+	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
+	vars := mux.Vars(r)
+
+	group, err := line_service.GetGroup(user, vars["id"])
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	response, err := json.Marshal(group)
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	w.Write(response)
 }

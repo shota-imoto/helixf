@@ -29,7 +29,7 @@ function App() {
               </GroupsContextProvider>
             </Authentication>
           } />
-          <Route path="/group/:id" element={
+          <Route path="/groups/:id" element={
             <Authentication>
               <GroupsContextProvider>
                 <GroupPage/>

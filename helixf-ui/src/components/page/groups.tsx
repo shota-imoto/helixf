@@ -42,7 +42,7 @@ const GroupList = (groups: Group[]) => {
 	return(
 		<>
 			{groups.map((g) => {
-				return <div key={g.id}><Link to={`/group/${g.id}`}>{g.group_name} </Link></div>
+				return <div key={g.id}><Link to={`/groups/${g.id}`}>{g.group_name} </Link></div>
 			})}
 		</>
 	)
