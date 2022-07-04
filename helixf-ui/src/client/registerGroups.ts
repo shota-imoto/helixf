@@ -1,13 +1,12 @@
 import { urlHost, postProps, postHeader, unauthorizedHandler } from './common'
 
 type registerGroupsProps = postProps & {
-	groupId: string
+	lineGroupId: string
 }
-
 
 const registerGroups = (props: registerGroupsProps) => {
 	const body = {
-		group_id: props.groupId
+		group_id: props.lineGroupId
 	}
 
 	const data: RequestInit = {

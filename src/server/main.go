@@ -23,6 +23,8 @@ func main() {
 	r.HandleFunc("/regular_schedule_template", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups/register", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups", handlers.CorsHandler).Methods(http.MethodOptions)
+	r.HandleFunc("/groups/{id}", handlers.CorsHandler).Methods(http.MethodOptions)
+
 	// r.Use(mux.CORSMethodMiddleware(r))
 	r.Use(middleware.SetCorsHandler)
 	r.Use(middleware.GetAuthUser)

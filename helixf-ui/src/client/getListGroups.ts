@@ -1,7 +1,7 @@
 import { urlHost, getProps, getHeader, unauthorizedHandler } from './common'
 
 
-const getListGroups = async (props: getProps) => {
+export const getListGroups = async (props: getProps) => {
 	const data: RequestInit = {
 		method: 'GET',
 		mode: 'cors',

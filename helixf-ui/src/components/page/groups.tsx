@@ -19,7 +19,7 @@ const GroupsIndex = () => {
 	useEffect(() => {
 		const groupId = query.get('group_id')
 		if (groupId !== null) {
-			registerGroups({groupId: groupId, authorization: cookies.authorization})
+			registerGroups({lineGroupId: groupId, authorization: cookies.authorization})
 		}
 	}, [])
 
