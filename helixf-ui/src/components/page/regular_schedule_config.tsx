@@ -4,9 +4,8 @@ import { useCookies } from "react-cookie"
 import postRegularScheduleTemplate from "../../client/postRegularScheduleTemplate"
 import { postProps } from "../../client/common"
 import { helixfCookieName } from './authentication'
-import { convertCompilerOptionsFromJson } from 'typescript'
 
-const RegularScheduleTemplateConfig = () => {
+const RegularScheduleConfig = () => {
 	const weekdays:string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 	const [cookies, setCookie] = useCookies([helixfCookieName]);
 	const [month, setMonth] = useState("")
@@ -27,14 +26,20 @@ const RegularScheduleTemplateConfig = () => {
 		)
 	}
 
-	const onSubmit = (e : React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+	const onSubmit = async (e : React.MouseEvent<HTMLInputElement, MouseEvent>) => {
 		e.preventDefault()
 		const corrected_month = month === "" ? "0" : month
 		const corrected_week = week === "" ? "0" : week
 		const corrected_day = day === "" ? "0" : day
 		const corrected_hour = hour === "" ? "0" : hour
 
-		postRegularScheduleTemplate({month: corrected_month, week: corrected_week, weekday: weekday, day: corrected_day, hour: corrected_hour, authorization: cookies.authorization})
+		const response = await postRegularScheduleTemplate({month: corrected_month, week: corrected_week, weekday: weekday, day: corrected_day, hour: corrected_hour, authorization: cookies.authorization})
+		console.log(response.status)
+		if (response.status === 200) {
+
+		} else {
+			// エラー処理
+		}
 	}
 
 	return (
@@ -69,4 +74,4 @@ const RegularScheduleTemplateConfig = () => {
 	)
 }
 
-export default RegularScheduleTemplateConfig
+export default RegularScheduleConfig
