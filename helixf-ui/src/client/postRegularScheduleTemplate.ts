@@ -6,6 +6,7 @@ type postRegularScheduleTemplateProps = postProps & {
 	weekday: string,
 	day?: string,
 	hour?: string
+	groupId: string
 }
 
 const postRegularScheduleTemplate = async (props: postRegularScheduleTemplateProps) => {
@@ -15,6 +16,7 @@ const postRegularScheduleTemplate = async (props: postRegularScheduleTemplatePro
 		"weekday": props.weekday,
 		"day": props.day,
 		"hour": props.hour,
+		"groupId": props.groupId
 	}
 
 	const data: RequestInit = {

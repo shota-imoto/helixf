@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useCookies } from "react-cookie"
+import { useParams } from 'react-router-dom'
 import Modal from 'react-modal'
 import postRegularScheduleTemplate from "../../../client/postRegularScheduleTemplate"
 import { helixfCookieName } from '../../page/authentication'
@@ -12,6 +13,8 @@ const RegularScheduleModal = (props: {isOpen: boolean, setIsOpen: React.Dispatch
 	const [weekday, setWeekday] = useState(weekdays[0])
 	const [day, setDay] = useState("")
 	const [hour, setHour] = useState("")
+	const { id } = useParams()
+
 
 	const WeekdayForm = () => {
 		return (
@@ -27,12 +30,14 @@ const RegularScheduleModal = (props: {isOpen: boolean, setIsOpen: React.Dispatch
 
 	const onSubmit = async (e : React.MouseEvent<HTMLInputElement, MouseEvent>) => {
 		e.preventDefault()
+		if (!id) return
+
 		const corrected_month = month === "" ? "0" : month
 		const corrected_week = week === "" ? "0" : week
 		const corrected_day = day === "" ? "0" : day
 		const corrected_hour = hour === "" ? "0" : hour
 
-		const response = await postRegularScheduleTemplate({month: corrected_month, week: corrected_week, weekday: weekday, day: corrected_day, hour: corrected_hour, authorization: cookies.authorization})
+		const response = await postRegularScheduleTemplate({month: corrected_month, week: corrected_week, weekday: weekday, day: corrected_day, hour: corrected_hour, groupId: id, authorization: cookies.authorization})
 		console.log(response.status)
 		if (response.status === 200) {
 

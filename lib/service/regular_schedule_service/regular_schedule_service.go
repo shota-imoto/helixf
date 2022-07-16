@@ -7,6 +7,11 @@ import (
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
 )
 
+// func GetListRegularScheduleTemplate(user helixf_user.User, group_id string) ([]regular_schedule_template.RegularScheduleTemplate, error) {
+// var regular_schedule_templates []regular_schedule_template.RegularScheduleTemplate
+// result := db.Db.
+// }
+
 func CreateWithValidate(template regular_schedule_template.RegularScheduleTemplate) (regular_schedule_template.RegularScheduleTemplate, error) {
 	template, err := Validate(template)
 

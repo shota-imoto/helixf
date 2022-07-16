@@ -15,6 +15,7 @@ func main() {
 	r.HandleFunc("/groups/register", handlers.RegisterGroups).Methods(http.MethodPost)
 	r.HandleFunc("/groups", handlers.GetListGroups).Methods(http.MethodGet)
 	r.HandleFunc("/groups/{id}", handlers.GetGroup).Methods(http.MethodGet)
+	r.HandleFunc("/groups/{id}/regular_schedule_templates", handlers.GetListRegularScheduleTemplates).Methods(http.MethodGet)
 	r.HandleFunc("/callback", handlers.LineCallbackHandler)
 	r.HandleFunc("/authenticate", handlers.LineAuthenticationHandler)  // AuthorizatonCode取得
 	r.HandleFunc("/assert_auth", handlers.AssertAuthenticationHandler) // AuthorizationCode検証＆AuthorizationToken取得
@@ -24,6 +25,7 @@ func main() {
 	r.HandleFunc("/groups/register", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups/{id}", handlers.CorsHandler).Methods(http.MethodOptions)
+	r.HandleFunc("/groups/{id}/regular_schedule_templates", handlers.GetListRegularScheduleTemplates).Methods(http.MethodOptions)
 
 	// r.Use(mux.CORSMethodMiddleware(r))
 	r.Use(middleware.SetCorsHandler)

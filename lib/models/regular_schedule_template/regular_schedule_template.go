@@ -16,12 +16,14 @@ type RegularScheduleTemplate struct {
 	Weekday         Weekday `sql:"type:int" json:"weekday"`
 	Week            int     `sql:"type:int" json:"week,string"`
 	Month           int     `sql:"type:int" json:"month,string"`
+	LineGroupId     uint    `sql:"type:uint" json:"groupId,string"`
 	RegularSchedule regular_schedule.RegularSchedule
 	CreatedAt       time.Time
 }
 
 type Weekday time.Weekday
 
+// いる？
 const (
 	Sunday Weekday = iota
 	Monday
@@ -51,6 +53,36 @@ func (weekday Weekday) toTimeWeekday() time.Weekday {
 	default:
 		return time.Sunday
 	}
+}
+
+func (wd *Weekday) String() string {
+	fmt.Println(wd.toTimeWeekday().String())
+	return wd.toTimeWeekday().String()
+}
+
+func (t RegularScheduleTemplate) MarshalJSON() ([]byte, error) {
+	// Weekday以外は特に変換必要ないので何とかスマートに書けない？
+	return json.Marshal(&struct {
+		Id              uint   `gorm:"primaryKey" sql:"type:uint"`
+		Hour            int    `sql:"type:int" json:"hour,string"`
+		Day             int    `sql:"type:int" json:"day,string"`
+		Weekday         string `json:"weekday"`
+		Week            int    `sql:"type:int" json:"week,string"`
+		Month           int    `sql:"type:int" json:"month,string"`
+		LineGroupId     uint   `sql:"type:uint" json:"groupId,string"`
+		RegularSchedule regular_schedule.RegularSchedule
+		CreatedAt       time.Time
+	}{
+		Id:              t.Id,
+		Hour:            t.Hour,
+		Day:             t.Day,
+		Weekday:         t.Weekday.String(),
+		Week:            t.Week,
+		Month:           t.Month,
+		LineGroupId:     t.LineGroupId,
+		RegularSchedule: t.RegularSchedule,
+		CreatedAt:       t.CreatedAt,
+	})
 }
 
 // RegularScheduleTemplateストラクトのJson Unmarshal用
