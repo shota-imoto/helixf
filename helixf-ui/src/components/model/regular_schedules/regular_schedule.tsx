@@ -11,7 +11,7 @@ export type RegularScheduleTemplate = {
 	hour: string
 	day: string
 	weekday: string
-	week: number
+	week: string
 	month: string
 	year: number
 }
@@ -40,7 +40,6 @@ const numberToXth = (number: number): string => {
 
 const TemplateLabel = (template: RegularScheduleTemplate): string => {
 	let label = ""
-	console.log(template.weekday)
 	if (template.month !== "0") {
 		label = label.concat(`every ${getMonthName(Number(template.month))} `)
 	} else {
@@ -49,7 +48,11 @@ const TemplateLabel = (template: RegularScheduleTemplate): string => {
 	if (template.day !== "0") {
 		label = label.concat(numberToXth(Number(template.day)))
 	} else {
-		if (template.week) label = label.concat(`${numberToXth(Number(template.week))} `)
+		if (template.week !== '0') {
+			label = label.concat(`${numberToXth(Number(template.week))} `)
+		} else {
+			label = label.concat('every ')
+		}
 		label = label.concat(template.weekday)
 	}
 
@@ -66,11 +69,10 @@ const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
 	return (
 		<>
 			{props.regularScheduleTemplates.map((template) => {
-				return <>
-					<div>
+				return<div key={template.id}>
 						{TemplateLabel(template)}
 					</div>
-				</>
+
 			})}
 		</>
 	)

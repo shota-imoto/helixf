@@ -63,13 +63,13 @@ func (wd *Weekday) String() string {
 func (t RegularScheduleTemplate) MarshalJSON() ([]byte, error) {
 	// Weekday以外は特に変換必要ないので何とかスマートに書けない？
 	return json.Marshal(&struct {
-		Id              uint   `gorm:"primaryKey" sql:"type:uint"`
-		Hour            int    `sql:"type:int" json:"hour,string"`
-		Day             int    `sql:"type:int" json:"day,string"`
+		Id              uint   `json:"id"`
+		Hour            int    `json:"hour,string"`
+		Day             int    `json:"day,string"`
 		Weekday         string `json:"weekday"`
-		Week            int    `sql:"type:int" json:"week,string"`
-		Month           int    `sql:"type:int" json:"month,string"`
-		LineGroupId     uint   `sql:"type:uint" json:"groupId,string"`
+		Week            int    `json:"week,string"`
+		Month           int    `json:"month,string"`
+		LineGroupId     uint   `json:"groupId,string"`
 		RegularSchedule regular_schedule.RegularSchedule
 		CreatedAt       time.Time
 	}{
