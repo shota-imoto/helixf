@@ -1,25 +1,20 @@
-import { useState, createContext } from 'react'
+import React, { useState, createContext } from 'react'
 
-//model
+// model
 import { Group } from '../components/model/group'
 
 type GroupsContextType = {
-  groups: Group[],
+  groups: Group[]
   setGroups: React.Dispatch<React.SetStateAction<Group[]>>
 }
 
 export const GroupsContext = createContext({} as GroupsContextType)
 
-export const GroupsContextProvider:React.FC<{children?: JSX.Element}> = ({children}) => {
+export const GroupsContextProvider: React.FC<{ children?: JSX.Element }> = ({ children }) => {
   const [groups, setGroups] = useState([] as Group[])
-
   return (
     <>
-      <GroupsContext.Provider value={{groups, setGroups}}>
-        {children}
-      </GroupsContext.Provider>
+      <GroupsContext.Provider value={{ groups, setGroups }}>{children}</GroupsContext.Provider>
     </>
   )
-
-
 }
