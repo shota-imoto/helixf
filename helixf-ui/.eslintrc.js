@@ -31,8 +31,9 @@ module.exports = {
         objects: 'ignore',
         imports: 'never',
         exports: 'never',
-        functions: 'never',
+        functions: 'ignore',
       }
     ],
+    indent: 'off',
   },
 }

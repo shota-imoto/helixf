@@ -16,7 +16,7 @@ export const getListRegularSchedule = async (props: getListRegularScheduleProps)
         unauthorizedHandler()
       }
       return response.json()
-    }
+    },
   )
 }
 

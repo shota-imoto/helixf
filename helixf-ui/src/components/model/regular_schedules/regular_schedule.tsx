@@ -1,3 +1,5 @@
+import styled from 'styled-components'
+
 export type RegularScheduleTemplate = {
   id: number
   hour: string
@@ -5,7 +7,6 @@ export type RegularScheduleTemplate = {
   weekday: string
   week: string
   month: string
-  year: number
 }
 
 const months = [
@@ -40,29 +41,29 @@ const numberToXth = (number: number): string => {
   }
 }
 
-// タイプ一覧
-// hour 0以外なら：X時
-// day 0以外なら：X日
-// weekday dayが0なら：X曜日
-// week weekが0以外なら：X週目
-// month 0以外なら：毎年X月
-
 const TemplateLabel = (template: RegularScheduleTemplate): string => {
   let label = ''
   if (template.month !== '0') {
     label = label.concat(`every ${getMonthName(Number(template.month))} `)
   } else {
+    // month 0以外なら：毎年X月
     label = label.concat('every month ')
   }
   if (template.day !== '0') {
-    label = label.concat(numberToXth(Number(template.day)))
+    // day 0以外なら：X日
+    label = label.concat(`${numberToXth(Number(template.day))} `)
   } else {
     if (template.week !== '0') {
+      // week weekが0以外なら：X週目
       label = label.concat(`${numberToXth(Number(template.week))} `)
     } else {
       label = label.concat('every ')
     }
-    label = label.concat(template.weekday)
+    // weekday dayが0なら：X曜日
+    label = label.concat(`${template.weekday} `)
+  }
+  if (template.hour !== '0') {
+    label = label.concat(`${template.hour}:00`)
   }
 
   return label
@@ -78,7 +79,7 @@ const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
       {props.regularScheduleTemplates.length
         ? (
             props.regularScheduleTemplates.map((template) => {
-              return <div key={template.id}>{TemplateLabel(template)}</div>
+              return <TemplateLabelDiv key={template.id}>{TemplateLabel(template)}</TemplateLabelDiv>
             })
           )
         : (
@@ -87,5 +88,10 @@ const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
     </>
   )
 }
+
+const TemplateLabelDiv = styled.div`
+  border: 1px #000000 solid;
+  margin-bottom: 8px;
+`
 
 export default RegularScheduleTemplateList

@@ -46,7 +46,7 @@ const GroupPage = () => {
         <div>
           <div>
             <button onClick={() => setIsOpen(true)}>新規登録</button>
-            <RegularScheduleModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <RegularScheduleModal isOpen={isOpen} setIsOpen={setIsOpen} templates={templates} setTemplates={setTemplates}/>
           </div>
           <div>Group detail</div>
           <div>{group.group_name}</div>

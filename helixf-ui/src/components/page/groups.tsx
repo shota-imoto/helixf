@@ -27,7 +27,6 @@ const GroupsIndex = () => {
     })
   }, [])
 
-  console.log(groups)
   return <>{groups.length ? <div>{GroupList(groups)}</div> : <div>groups#index not exists</div>}</>
 }
 

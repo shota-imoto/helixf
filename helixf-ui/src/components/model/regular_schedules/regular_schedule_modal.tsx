@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom'
 import Modal from 'react-modal'
 import postRegularScheduleTemplate from '../../../client/postRegularScheduleTemplate'
 import { helixfCookieName } from '../../page/authentication'
+import { RegularScheduleTemplate } from './regular_schedule'
 
 const RegularScheduleModal = (props: {
   isOpen: boolean
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+	templates: RegularScheduleTemplate[],
+	setTemplates: React.Dispatch<React.SetStateAction<RegularScheduleTemplate[]>>
 }) => {
   const weekdays: string[] = [
     'Sunday',
@@ -57,13 +60,8 @@ const RegularScheduleModal = (props: {
       hour: correctedHour,
       groupId: id,
       authorization: cookies.authorization,
-    })
-    console.log(response.status)
-    if (response.status === 200) {
-      // 正常動作
-    } else {
-      // エラー処理
-    }
+    }).then((response) => response.json())
+		props.setTemplates([...props.templates, response])
   }
 
   return (

@@ -26,16 +26,11 @@ const postRegularScheduleTemplate = async (props: postRegularScheduleTemplatePro
     body: JSON.stringify(body),
   }
 
-  return await fetch(urlHost + 'regular_schedule_template', data)
-    .then((response) => {
-      if (response.status === 401) {
-        unauthorizedHandler()
-      }
-      return response
-    })
-    .catch((error) => {
-      return error
-    })
+  const response = await fetch(urlHost + 'regular_schedule_template', data)
+  if (response.status === 401) {
+    unauthorizedHandler()
+  }
+  return response
 }
 
 export default postRegularScheduleTemplate
