@@ -47,21 +47,31 @@ const RegularScheduleModal = (props: {
     e.preventDefault()
     if (!id) return
 
-    const correctedMonth = month === '' ? '0' : month
-    const correctedWeek = week === '' ? '0' : week
-    const correctedDay = day === '' ? '0' : day
-    const correctedHour = hour === '' ? '0' : hour
-
     const response = await postRegularScheduleTemplate({
-      month: correctedMonth,
-      week: correctedWeek,
+      month: Number(month).toString(),
+      week: Number(week).toString(),
       weekday,
-      day: correctedDay,
-      hour: correctedHour,
+      day: Number(day).toString(),
+      hour: Number(hour).toString(),
       groupId: id,
       authorization: cookies.authorization,
     }).then((response) => response.json())
-		props.setTemplates([...props.templates, response])
+
+		if (response.message) {
+			alert('registration is failed. please, check input value.')
+			console.log(`error raised: ${response.message}`)
+		} else {
+			props.setTemplates([...props.templates, response])
+		}
+
+		props.setIsOpen(false)
+
+		// reset form
+		setMonth('')
+		setWeek('')
+		setWeekday(weekdays[0])
+		setDay('')
+		setHour('')
   }
 
   return (
