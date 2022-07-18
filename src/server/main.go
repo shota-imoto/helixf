@@ -12,6 +12,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/regular_schedule_template", handlers.PostRegularScheduleTemplateHandler).Methods(http.MethodPost)
+	r.HandleFunc("/regular_schedule_templates/{id}", handlers.DeleteRegularScheduleTemplateHandler).Methods(http.MethodDelete)
 	r.HandleFunc("/groups/register", handlers.RegisterGroups).Methods(http.MethodPost)
 	r.HandleFunc("/groups", handlers.GetListGroups).Methods(http.MethodGet)
 	r.HandleFunc("/groups/{id}", handlers.GetGroup).Methods(http.MethodGet)
@@ -22,6 +23,7 @@ func main() {
 
 	// CORSのpreflightリクエストの受諾が必要なパスはこちらに追加すること
 	r.HandleFunc("/regular_schedule_template", handlers.CorsHandler).Methods(http.MethodOptions)
+	r.HandleFunc("/regular_schedule_templates/{id}", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups/register", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups", handlers.CorsHandler).Methods(http.MethodOptions)
 	r.HandleFunc("/groups/{id}", handlers.CorsHandler).Methods(http.MethodOptions)

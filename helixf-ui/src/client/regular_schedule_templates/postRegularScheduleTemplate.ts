@@ -1,4 +1,4 @@
-import { urlHost, postProps, postHeader, unauthorizedHandler } from './common'
+import { urlHost, postProps, postHeader, unauthorizedHandler } from '../common'
 
 type postRegularScheduleTemplateProps = postProps & {
   month?: string

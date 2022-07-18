@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
@@ -75,4 +76,27 @@ func PostRegularScheduleTemplateHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	w.Write(response)
+}
+
+func DeleteRegularScheduleTemplateHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Origin", domain.FrontendUrl)
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization")
+
+	user, _ := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.ParseUint(vars["id"], 10, 64)
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+	}
+
+	err = regular_schedule_service.DeleteById(uint(id), user)
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+	}
+
+	w.WriteHeader(204)
 }

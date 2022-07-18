@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useParams } from 'react-router-dom'
 import Modal from 'react-modal'
-import postRegularScheduleTemplate from '../../../client/postRegularScheduleTemplate'
+import postRegularScheduleTemplate from '../../../client/regular_schedule_templates/postRegularScheduleTemplate'
 import { helixfCookieName } from '../../page/authentication'
 import { RegularScheduleTemplate } from './regular_schedule'
 

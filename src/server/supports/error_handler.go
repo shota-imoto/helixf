@@ -2,7 +2,6 @@ package supports
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -25,7 +24,6 @@ func UnauthorizedHandler(w http.ResponseWriter, r *http.Request, err error) {
 
 	response_struct := ErrorResponse{Message: err.Error()}
 	response_json, err := json.Marshal(response_struct)
-	fmt.Println(string(response_json))
 	if err != nil {
 		panic(err)
 	}

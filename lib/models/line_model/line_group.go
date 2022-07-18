@@ -35,6 +35,10 @@ func (group *LineGroup) GetFromLineDatabase() error {
 	client := new(http.Client)
 	res, err := client.Do(req)
 
+	if err != nil {
+		return err
+	}
+
 	reqBody, _ := ioutil.ReadAll(res.Body)
 
 	err = json.Unmarshal(reqBody, &group)

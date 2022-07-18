@@ -1,4 +1,6 @@
+import React from 'react'
 import styled from 'styled-components'
+import DeleteButton from './delete_bottun'
 
 export type RegularScheduleTemplate = {
   id: number
@@ -71,6 +73,7 @@ const TemplateLabel = (template: RegularScheduleTemplate): string => {
 
 type RegularScheduleTemplatesProps = {
   regularScheduleTemplates: RegularScheduleTemplate[]
+	setTemplates: React.Dispatch<React.SetStateAction<RegularScheduleTemplate[]>>
 }
 
 const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
@@ -79,7 +82,19 @@ const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
       {props.regularScheduleTemplates.length
         ? (
             props.regularScheduleTemplates.map((template) => {
-              return <TemplateLabelDiv key={template.id}>{TemplateLabel(template)}</TemplateLabelDiv>
+              return (
+                <TemplateLabelDiv key={template.id}>
+                  <div>{TemplateLabel(template)}</div>
+                  <TempalteLabelMenus>
+                    <TemplateLabelMenu>
+                      <button>edit</button>
+                    </TemplateLabelMenu>
+                    <div>
+                      <DeleteButton templateId={template.id} templates={props.regularScheduleTemplates} setTemplates={props.setTemplates} />
+                    </div>
+                  </TempalteLabelMenus>
+                </TemplateLabelDiv>
+              )
             })
           )
         : (
@@ -92,6 +107,13 @@ const RegularScheduleTemplateList = (props: RegularScheduleTemplatesProps) => {
 const TemplateLabelDiv = styled.div`
   border: 1px #000000 solid;
   margin-bottom: 8px;
+`
+
+const TempalteLabelMenus = styled.div`
+  display: flex;
+`
+const TemplateLabelMenu = styled.div`
+  margin-right: 4px;
 `
 
 export default RegularScheduleTemplateList

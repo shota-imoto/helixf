@@ -1,4 +1,4 @@
-import { urlHost, getProps, getHeader, unauthorizedHandler } from './common'
+import { urlHost, getProps, getHeader, unauthorizedHandler } from '../common'
 type getListRegularScheduleProps = getProps & {
   groupId: string
 }

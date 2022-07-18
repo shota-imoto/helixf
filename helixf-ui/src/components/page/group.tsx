@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { helixfCookieName } from './authentication'
 
 import getGroup from '../../client/getGroup'
-import getListRegularSchedule from '../../client/getListRegularSchedule'
+import getListRegularSchedule from '../../client/regular_schedule_templates/getListRegularSchedule'
 import { GroupsContext } from '../../context/groups'
 import { Group } from '../model/group'
 import RegularScheduleModal from '../model/regular_schedules/regular_schedule_modal'
@@ -50,7 +50,7 @@ const GroupPage = () => {
           </div>
           <div>Group detail</div>
           <div>{group.group_name}</div>
-          <RegularScheduleTemplateList regularScheduleTemplates={templates} />
+          <RegularScheduleTemplateList regularScheduleTemplates={templates} setTemplates={setTemplates} />
         </div>
           )
         : (
