@@ -19,6 +19,11 @@ func GenerateNextSchedule() {
 	}
 
 	db.Db.CreateInBatches(schedules, 100)
+
+	// RegularScheduleに対して、出欠確認スケジュールを生成・紐付けする。
+	// RegularScheduleにAttendConfirmScheduleをleft joinし、AttendConfirmScheduleを持たないレコードを取り出す
+	// それぞれに対してAttendConfirmScheduleを生成する
+
 	return
 }
 

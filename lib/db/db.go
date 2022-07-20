@@ -3,11 +3,11 @@ package db
 import (
 	"io/ioutil"
 
+	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
-	"github.com/shota-imoto/helixf/lib/models/reschedule"
 	"github.com/shota-imoto/helixf/lib/utils/helixf_env"
 	"gopkg.in/yaml.v2"
 
@@ -30,7 +30,8 @@ func init() {
 	Db.AutoMigrate(
 		&regular_schedule_template.RegularScheduleTemplate{},
 		&regular_schedule.RegularSchedule{},
-		&reschedule.RescheduleTemplate{},
+		&attend_confirmation.AttendConfirmTemplate{},
+		&attend_confirmation.AttendConfirmSchedule{},
 		&helixf_user.User{},
 		&line_model.LineGroup{},
 		&line_model.LineGroupUserMap{},
