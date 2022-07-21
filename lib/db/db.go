@@ -24,9 +24,6 @@ func init() {
 		panic(err)
 	}
 
-	if helixf_env.HelixfEnv == "test" {
-		Db = Db.Begin()
-	}
 	Db.AutoMigrate(
 		&regular_schedule_template.RegularScheduleTemplate{},
 		&regular_schedule.RegularSchedule{},
@@ -36,6 +33,10 @@ func init() {
 		&line_model.LineGroup{},
 		&line_model.LineGroupUserMap{},
 	)
+
+	if helixf_env.HelixfEnv == "test" {
+		Db = Db.Begin()
+	}
 }
 
 type DbConfig struct {
