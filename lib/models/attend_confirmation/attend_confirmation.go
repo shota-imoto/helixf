@@ -21,7 +21,7 @@ type AttendConfirmTemplate struct {
 type AttendConfirmSchedule struct {
 	Id                      uint      `gorm:"primaryKey"`
 	Date                    time.Time `sql:"not null;type:date"`
-	DeadDate                time.Time
+	DeadDate                time.Time `sql:"not null;type:date"`
 	AttendConfirmTemplateId uint
 	RegularScheduleId       uint
 }

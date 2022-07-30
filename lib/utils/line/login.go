@@ -14,6 +14,8 @@ import (
 	"github.com/shota-imoto/helixf/lib/utils/domain"
 )
 
+// TODO: ディレクトリ・ファイル名全般に違和感のため再検討。APIやAPI clientのような名称が含まれるべき
+
 var LoginURL string = "https://access.line.me/oauth2/v2.1/authorize"
 var TokenURL string = "https://api.line.me/oauth2/v2.1/token"
 var ClientId string = "1657099914"
