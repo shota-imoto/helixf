@@ -9,6 +9,17 @@ import (
 	"github.com/shota-imoto/helixf/lib/utils/line"
 )
 
+func SendConfirmMessagesJob() {
+	client, err := line.LinebotClient()
+	if err != nil {
+		// TODO: エラー通知する。処理は中断する
+		return
+	}
+	wrapper := line.LineBotWrapper{Bot: client}
+	messager := line.Messager{Wrapper: &wrapper} // GroupID？？SendConfirmMessage内でセットすべきでは？
+	SendConfirmMessages(&messager, time.Now())
+}
+
 func SendConfirmMessages(message *line.Messager, now time.Time) []error {
 	// 本日分のAttendConfirmScheduleを取得
 	var confirm_schedules []attend_confirmation.AttendConfirmSchedule

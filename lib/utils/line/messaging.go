@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
@@ -33,6 +34,10 @@ type CheckMenberClient struct {
 	AccessToken string `json:"access_token"`
 	GroupId     string `json:"group_id"`
 	UserId      string
+}
+
+func LinebotClient() (*linebot.Client, error) {
+	return linebot.New(os.Getenv("LINE_SECRET"), os.Getenv("LINE_ACCESS_TOKEN"))
 }
 
 func (client CheckMenberClient) CheckMemberURL() string {
