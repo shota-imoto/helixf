@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
+	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 	"github.com/shota-imoto/helixf/lib/utils/line"
 )
 
@@ -15,7 +15,7 @@ type LineGroup struct {
 	GroupId                  string `sql:"type:string,autoIncrement:false" json:"group_id,string"`
 	GroupName                string `sql:"type:string" json:"group_name,string"`
 	PictureUrl               string `sql:"type:string" json:"picture_url,string"`
-	RegularScheduleTemplates []regular_schedule_template.RegularScheduleTemplate
+	RegularScheduleTemplates []regular_schedule.RegularScheduleTemplate
 }
 
 type LineGroupUserMap struct {

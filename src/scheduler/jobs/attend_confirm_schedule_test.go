@@ -9,7 +9,6 @@ import (
 	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
 	"github.com/shota-imoto/helixf/lib/utils/line"
 	"github.com/shota-imoto/helixf/scheduler/jobs"
 )
@@ -18,7 +17,7 @@ func TestSendonfirmMessages(t *testing.T) {
 	group := line_model.LineGroup{GroupId: "Caa245c3d70b26b44b475553ab3ed017e"}
 	db.Db.Create(&group)
 
-	template := regular_schedule_template.RegularScheduleTemplate{LineGroupId: group.Id}
+	template := regular_schedule.RegularScheduleTemplate{LineGroupId: group.Id}
 	db.Db.Create(&template)
 
 	regular_schedule := regular_schedule.RegularSchedule{Date: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC), RegularScheduleTemplateId: template.Id}

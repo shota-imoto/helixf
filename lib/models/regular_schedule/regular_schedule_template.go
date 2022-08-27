@@ -1,11 +1,10 @@
-package regular_schedule_template
+package regular_schedule
 
 import (
 	"encoding/json"
 	"fmt"
 	"time"
 
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 	"github.com/shota-imoto/helixf/lib/utils/schedule"
 )
 
@@ -17,7 +16,7 @@ type RegularScheduleTemplate struct {
 	Week            int     `sql:"type:int" json:"week,string"`
 	Month           int     `sql:"type:int" json:"month,string"`
 	LineGroupId     uint    `sql:"type:uint" json:"groupId,string"`
-	RegularSchedule regular_schedule.RegularSchedule
+	RegularSchedule RegularSchedule
 	CreatedAt       time.Time
 }
 
@@ -70,7 +69,7 @@ func (t RegularScheduleTemplate) MarshalJSON() ([]byte, error) {
 		Week            int    `json:"week,string"`
 		Month           int    `json:"month,string"`
 		LineGroupId     uint   `json:"groupId,string"`
-		RegularSchedule regular_schedule.RegularSchedule
+		RegularSchedule RegularSchedule
 		CreatedAt       time.Time
 	}{
 		Id:              t.Id,
@@ -114,7 +113,7 @@ func (weekday *Weekday) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (template RegularScheduleTemplate) BuildSchedule(t time.Time) regular_schedule.RegularSchedule {
+func (template RegularScheduleTemplate) BuildSchedule(t time.Time) RegularSchedule {
 	var next_schedule time.Time
 
 	if template.Month == 0 || template.Month == int(t.Month()) {
@@ -130,7 +129,7 @@ func (template RegularScheduleTemplate) BuildSchedule(t time.Time) regular_sched
 	}
 
 	next_schedule = template.SetTime(next_schedule)
-	next_regular_schedule := regular_schedule.RegularSchedule{Date: next_schedule, RegularScheduleTemplateId: template.Id}
+	next_regular_schedule := RegularSchedule{Date: next_schedule, RegularScheduleTemplateId: template.Id}
 
 	return next_regular_schedule
 }

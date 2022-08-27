@@ -9,7 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
+	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 	"github.com/shota-imoto/helixf/lib/service/line_service"
 	"github.com/shota-imoto/helixf/lib/service/regular_schedule_service"
 	"github.com/shota-imoto/helixf/lib/utils/domain"
@@ -18,7 +18,7 @@ import (
 )
 
 type GetListRegularScheduleTemplatesResponse struct {
-	RegularScheduleTemplates []regular_schedule_template.RegularScheduleTemplate `json:"regular_schedule_templates,array"`
+	RegularScheduleTemplates []regular_schedule.RegularScheduleTemplate `json:"regular_schedule_templates,array"`
 }
 
 func GetListRegularScheduleTemplates(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +54,7 @@ func PostRegularScheduleTemplateHandler(w http.ResponseWriter, r *http.Request) 
 	fmt.Println(user)
 
 	// curl -X POST http://localhost:8080/regular_schedule_template -H "Content-Type: application/json" -d '{"hour":13, "weekday":5, "week":2}'
-	var template regular_schedule_template.RegularScheduleTemplate
+	var template regular_schedule.RegularScheduleTemplate
 	reqBody, _ := ioutil.ReadAll(r.Body)
 
 	err := json.Unmarshal(reqBody, &template)

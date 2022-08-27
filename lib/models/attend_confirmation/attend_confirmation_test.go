@@ -8,14 +8,14 @@ import (
 	"github.com/shota-imoto/helixf/lib/db"
 	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
+	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
 )
 
 func TestBuildSchedule(t *testing.T) {
 	// regular_schedule.Dateは2022/2/1
 	group := line_model.LineGroup{GroupId: "dummy"}
 	db.Db.Create(&group)
-	regular_template := regular_schedule_template.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
+	regular_template := regular_schedule.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
 	db.Db.Create(&regular_template)
 
 	today := time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC)

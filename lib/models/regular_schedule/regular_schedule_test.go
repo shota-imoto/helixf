@@ -1,4 +1,4 @@
-package regular_schedule_template_test
+package regular_schedule_test
 
 import (
 	"fmt"
@@ -6,14 +6,13 @@ import (
 	"time"
 
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
 )
 
 func TestFactorySchedule(t *testing.T) {
-	var template regular_schedule_template.RegularScheduleTemplate
+	var template regular_schedule.RegularScheduleTemplate
 
 	fmt.Println("# every third wednesday")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 2, Month: 0}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 2, Month: 0}
 
 	var test_date time.Time
 	var result_schedule regular_schedule.RegularSchedule
@@ -50,7 +49,7 @@ func TestFactorySchedule(t *testing.T) {
 	}
 
 	fmt.Println("# every wednesday")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 0, Month: 0}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 0, Month: 0}
 
 	fmt.Println("## before day in week")
 	test_date = time.Date(2022, 1, 4, 1, 2, 3, 4, time.UTC)
@@ -77,7 +76,7 @@ func TestFactorySchedule(t *testing.T) {
 	}
 
 	fmt.Println("# every day in month")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 0, Day: 15, Weekday: 0, Week: 0, Month: 0}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 0, Day: 15, Weekday: 0, Week: 0, Month: 0}
 
 	fmt.Println("## before day in month")
 	test_date = time.Date(2022, 1, 14, 1, 2, 3, 4, time.UTC)
@@ -104,7 +103,7 @@ func TestFactorySchedule(t *testing.T) {
 	}
 
 	fmt.Println("# 毎年4/15にスケジュールの場合")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 0, Day: 15, Weekday: 0, Week: 0, Month: 4}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 0, Day: 15, Weekday: 0, Week: 0, Month: 4}
 
 	fmt.Println("## before month")
 	test_date = time.Date(2022, 3, 15, 1, 2, 3, 4, time.UTC)
@@ -147,7 +146,7 @@ func TestFactorySchedule(t *testing.T) {
 	}
 
 	fmt.Println("# every third wednesday in April")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 2, Month: 4}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 0, Day: 0, Weekday: 3, Week: 2, Month: 4}
 
 	fmt.Println("## before month")
 	test_date = time.Date(2022, 3, 13, 1, 2, 3, 4, time.UTC)
@@ -190,7 +189,7 @@ func TestFactorySchedule(t *testing.T) {
 	}
 
 	fmt.Println("# every third wednesday 13:00 in April")
-	template = regular_schedule_template.RegularScheduleTemplate{Hour: 13, Day: 0, Weekday: 3, Week: 2, Month: 4}
+	template = regular_schedule.RegularScheduleTemplate{Hour: 13, Day: 0, Weekday: 3, Week: 2, Month: 4}
 
 	fmt.Println("## before month")
 	test_date = time.Date(2022, 3, 13, 1, 2, 3, 4, time.UTC)
@@ -202,7 +201,7 @@ func TestFactorySchedule(t *testing.T) {
 
 	// その他エラーケース
 	fmt.Println("# other error case")
-	template = regular_schedule_template.RegularScheduleTemplate{Day: 1, Month: 2}
+	template = regular_schedule.RegularScheduleTemplate{Day: 1, Month: 2}
 	test_date = time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC)
 	result_schedule = template.BuildSchedule(test_date)
 	if result_schedule.Date != time.Date(2022, 2, 1, 0, 0, 0, 0, time.UTC) {

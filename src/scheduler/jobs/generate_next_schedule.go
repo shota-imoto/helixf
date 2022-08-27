@@ -6,11 +6,10 @@ import (
 	"github.com/shota-imoto/helixf/lib/db"
 	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
 )
 
 func GenerateNextSchedule() {
-	var templates []regular_schedule_template.RegularScheduleTemplate
+	var templates []regular_schedule.RegularScheduleTemplate
 	var regular_schedules []regular_schedule.RegularSchedule
 	db.Db.Table("regular_schedule_templates").Joins("left join regular_schedules on regular_schedule_templates.id = regular_schedules.regular_schedule_template_id").Where("regular_schedules.id is null").Scan(&templates)
 	now := time.Now()

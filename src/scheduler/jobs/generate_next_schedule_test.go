@@ -9,7 +9,6 @@ import (
 	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/line_model"
 	"github.com/shota-imoto/helixf/lib/models/regular_schedule"
-	"github.com/shota-imoto/helixf/lib/models/regular_schedule_template"
 	"github.com/shota-imoto/helixf/scheduler/jobs"
 )
 
@@ -18,7 +17,7 @@ func TestGenerateNextSchedule(t *testing.T) {
 	db.Db.Create(&group)
 
 	// スケジュール作成済みテンプレート
-	regular_template1 := regular_schedule_template.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
+	regular_template1 := regular_schedule.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
 	db.Db.Create(&regular_template1)
 
 	attend_confirm_template1 := attend_confirmation.AttendConfirmTemplate{ScheduleDayAgo: 2, DeadDayAfter: 1, RegularScheduleTemplateId: regular_template1.Id}
@@ -32,14 +31,14 @@ func TestGenerateNextSchedule(t *testing.T) {
 	db.Db.Create(&attend_confirmation1)
 
 	// スケジュール未作成テンプレート
-	regular_template2 := regular_schedule_template.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
+	regular_template2 := regular_schedule.RegularScheduleTemplate{Day: 1, Month: 2, LineGroupId: group.Id}
 	db.Db.Create(&regular_template2)
 
 	attend_confirm_template2 := attend_confirmation.AttendConfirmTemplate{ScheduleDayAgo: 2, DeadDayAfter: 1, RegularScheduleTemplateId: regular_template2.Id}
 	db.Db.Create(&attend_confirm_template2)
 
 	tests := []struct {
-		RegularScheduleTemplate          regular_schedule_template.RegularScheduleTemplate
+		RegularScheduleTemplate          regular_schedule.RegularScheduleTemplate
 		AttendConfirmTemplate            attend_confirmation.AttendConfirmTemplate
 		Description                      string
 		RegularScheduleCountBefore       int64
