@@ -17,10 +17,10 @@ func SendConfirmMessagesJob() {
 	}
 	wrapper := line.LineBotWrapper{Bot: client}
 	messager := line.Messager{Wrapper: &wrapper} // GroupID？？SendConfirmMessage内でセットすべきでは？
-	SendConfirmMessages(&messager, time.Now())
+	SendConfirmMessages(&messager.Wrapper, time.Now())
 }
 
-func SendConfirmMessages(message *line.Messager, now time.Time) []error {
+func SendConfirmMessages(line_wrapper *line.LineWrapper, now time.Time) []error {
 	// 本日分のAttendConfirmScheduleを取得
 	var confirm_schedules []attend_confirmation.AttendConfirmSchedule
 
@@ -29,14 +29,15 @@ func SendConfirmMessages(message *line.Messager, now time.Time) []error {
 	if err != nil {
 		return []error{err}
 	}
-	var template_ids []uint
+	var schedule_ids []uint
 
 	for _, s := range confirm_schedules {
-		template_ids = append(template_ids, s.RegularScheduleId)
+		schedule_ids = append(schedule_ids, s.RegularScheduleId)
 	}
 
 	var schedules []regular_schedule.RegularSchedule
-	err = db.Db.Where("regular_schedule_template_id = ?", template_ids).Find(&schedules).Error
+
+	err = db.Db.Where("id = ?", schedule_ids).Find(&schedules).Error
 
 	if err != nil {
 		return []error{err}
@@ -47,8 +48,8 @@ func SendConfirmMessages(message *line.Messager, now time.Time) []error {
 	var errs []error
 
 	for _, s := range schedules {
-		message.RegularSchedule = s
-		message.SendConfirm()
+		messager := line.Messager{Wrapper: *line_wrapper, RegularSchedule: s}
+		messager.SendConfirm()
 		if err != nil {
 			errs = append(errs, err)
 		}

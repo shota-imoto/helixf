@@ -32,28 +32,28 @@ func TestSendonfirmMessages(t *testing.T) {
 		Today       time.Time
 		ConfirmDate time.Time
 		DeadDate    time.Time
-		SentMessage bool
+		SentCount   int
 	}{
 		{
 			Description: "今日が出欠確認日より前",
 			Today:       time.Date(2022, 8, 1, 0, 0, 0, 0, time.UTC),
 			ConfirmDate: time.Date(2022, 8, 2, 0, 0, 0, 0, time.UTC),
 			DeadDate:    time.Date(2022, 8, 3, 0, 0, 0, 0, time.UTC),
-			SentMessage: false,
+			SentCount:   0,
 		},
 		{
 			Description: "今日が出欠確認日より後、かつ締切日より前",
 			Today:       time.Date(2022, 8, 2, 0, 0, 0, 0, time.UTC),
 			ConfirmDate: time.Date(2022, 8, 1, 0, 0, 0, 0, time.UTC),
 			DeadDate:    time.Date(2022, 8, 3, 0, 0, 0, 0, time.UTC),
-			SentMessage: true,
+			SentCount:   1,
 		},
 		{
 			Description: "今日が締切日より後",
 			Today:       time.Date(2022, 8, 3, 0, 0, 0, 0, time.UTC),
 			ConfirmDate: time.Date(2022, 8, 1, 0, 0, 0, 0, time.UTC),
 			DeadDate:    time.Date(2022, 8, 2, 0, 0, 0, 0, time.UTC),
-			SentMessage: false,
+			SentCount:   0,
 		},
 	}
 
@@ -62,15 +62,18 @@ func TestSendonfirmMessages(t *testing.T) {
 		confirm_schedule := attend_confirmation.AttendConfirmSchedule{Date: tt.ConfirmDate, DeadDate: tt.DeadDate, AttendConfirmTemplateId: confirm_template.Id, RegularScheduleId: regular_schedule.Id}
 		db.Db.Create(&confirm_schedule)
 
-		wrapper := line.DummyBotWrapper{}
-		messager := line.Messager{GroupId: group.GroupId, RegularSchedule: regular_schedule, Wrapper: &wrapper}
-
-		jobs.SendConfirmMessages(&messager, tt.Today)
+		// wrapper := line.DummyBotWrapper{}
+		// var _ line.LineWrapper = (*wrapper).(nil)
+		var wrapper line.LineWrapper = &line.DummyBotWrapper{}
+		// messager := line.Messager{GroupId: group.GroupId, RegularSchedule: regular_schedule, Wrapper: &wrapper}
+		jobs.SendConfirmMessages(&wrapper, tt.Today)
+		bot_wrapper := wrapper.(*line.DummyBotWrapper)
+		// interfaceからfieldの値を取り出したい。structに変換するにはどうすれば？switch文書くしかない？
 
 		// dummy messagerにgroupIdが格納されているかをSentMessageと照らし合わせて確認
-		sent_message := wrapper.PushedId != ""
-		if sent_message != tt.SentMessage {
-			t.Errorf("FAIL sent message, expected: %t got: %t", tt.SentMessage, sent_message)
+
+		if bot_wrapper.CalledCount != tt.SentCount {
+			t.Errorf("FAIL expected: %d, got: %d, messages: %v", tt.SentCount, bot_wrapper.CalledCount, bot_wrapper.PushedMessages)
 		}
 		db.Db.Where("id = ?", confirm_schedule.Id).Delete(attend_confirmation.AttendConfirmSchedule{})
 	}

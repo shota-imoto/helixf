@@ -112,6 +112,7 @@ func (wrapper *DummyBotWrapper) PushMessage(id string, messages ...linebot.Sendi
 		switch message.(type) {
 		case *linebot.TemplateMessage:
 			wrapper.PushedMessages = append(wrapper.PushedMessages, TextFromTemplate(message.(*linebot.TemplateMessage).Template))
+			wrapper.CalledCount++
 		default:
 			fmt.Println("undefined in helixf")
 		}
