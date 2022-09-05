@@ -63,7 +63,9 @@ func GetListGroups(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
 	fmt.Println(user)
 
+	var err error
 	groups, err := line_service.GetListGroups(user)
+	groups = append(groups, line_model.LineGroup{GroupName: "hoge"})
 
 	if err != nil {
 		supports.ErrorHandler(w, r, err)

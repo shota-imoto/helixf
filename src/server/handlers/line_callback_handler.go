@@ -85,6 +85,9 @@ func LineAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	info := StateInformation{State: state, RedirectPath: r.URL.Query().Get("redirect_path"), UrlQuery: r.URL.Query().Get("query")}
 	err = db.Kvs.Set(ctx, state, &info, 0).Err()
 
+	fmt.Println(1111111)
+	fmt.Println(err)
+	fmt.Println(1111111)
 	if err != nil {
 		panic(err)
 	}
