@@ -67,3 +67,12 @@ services:
       - lib-src:/go/src/app/lib
     depends_on:
       - db
+  shell:
+    build:
+      context: .
+      dockerfile: docker/shell/Dockerfile
+    tty: true
+    volumes:
+      - server-src:/go/src/app/src/server
+      - scheduler-src:/go/src/app/src/scheduler
+      - lib-src:/go/src/app/lib
