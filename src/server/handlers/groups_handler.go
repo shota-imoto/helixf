@@ -61,7 +61,6 @@ type GetListGroupsResponse struct {
 func GetListGroups(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
 
-	var err error
 	groups, err := line_service.GetListGroups(user)
 
 	if err != nil {
