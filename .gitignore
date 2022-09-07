@@ -1,2 +1,6 @@
 .DS_Store
 docker-compose.yml
+
+# airによって生成されるバイナリ
+src/server/tmp
+src/scheduler/tmp

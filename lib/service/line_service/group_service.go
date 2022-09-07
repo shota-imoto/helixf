@@ -28,6 +28,8 @@ func GetListGroups(user helixf_user.User) ([]line_model.LineGroup, error) {
 	if result.Error != nil {
 		return groups, result.Error
 	}
+	groups = append(groups, line_model.LineGroup{GroupName: "hogehoge"})
+
 	return groups, nil
 }
 

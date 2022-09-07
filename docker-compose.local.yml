@@ -1,0 +1,69 @@
+version: "3.8"
+volumes:
+  lib-src:
+    driver_opts:
+      type: none
+      device: $PWD/lib
+      o: bind
+  server-src:
+    driver_opts:
+      type: none
+      device: $PWD/src/server
+      o: bind
+  scheduler-src:
+    driver_opts:
+      type: none
+      device: $PWD/src/scheduler
+      o: bind
+  mysql-data:
+  redis-data:
+services:
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_DATABASE: helixf
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+  redis:
+    image: redis:7.0
+    restart: always
+    expose:
+      - "6379"
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+  server:
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    environment:
+      # Line MessagingおよびAdminの鍵
+      - LINE_SECRET=###
+      - LINE_LOGIN_SECRET=###
+      - LINE_ACCESS_TOKEN=###
+
+      # ngorkで取得したURLを記載して使用
+      - URL_HOST=https://###.ngrok.io
+    volumes:
+      - server-src:/go/src/app/src/server
+      - lib-src:/go/src/app/lib
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+      - redis
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/scheduler/Dockerfile
+    volumes:
+      - scheduler-src:/go/src/app/src/scheduler
+      - lib-src:/go/src/app/lib
+    depends_on:
+      - db
