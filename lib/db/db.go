@@ -2,6 +2,7 @@ package db
 
 import (
 	"io/ioutil"
+	"time"
 
 	"github.com/shota-imoto/helixf/lib/models/attend_confirmation"
 	"github.com/shota-imoto/helixf/lib/models/helixf_user"
@@ -16,21 +17,43 @@ import (
 
 var Db *gorm.DB
 
+// mysqlの接続
+type ConnectOpenConfig struct {
+	Interval int
+	Retry    int
+	Count    int
+}
+
+func (config ConnectOpenConfig) intervalSleep() {
+	time.Sleep(time.Second * time.Duration(config.Interval))
+}
+
 func init() {
+	config := ConnectOpenConfig{Interval: 5, Retry: 20, Count: 0}
 	var err error
-	Db, err = gorm.Open(mysql.Open(dsn()), &gorm.Config{})
-	if err != nil {
-		panic(err)
+
+	for {
+		config.intervalSleep()
+
+		Db, err = gorm.Open(mysql.Open(dsn()), &gorm.Config{})
+		if err == nil {
+			break
+		} else {
+			if config.Count > config.Retry {
+				panic(err)
+			}
+			config.Count++
+		}
 	}
 
 	Db.AutoMigrate(
+		&helixf_user.User{},
+		&line_model.LineGroup{},
+		&line_model.LineGroupUserMap{},
 		&regular_schedule.RegularScheduleTemplate{},
 		&regular_schedule.RegularSchedule{},
 		&attend_confirmation.AttendConfirmTemplate{},
 		&attend_confirmation.AttendConfirmSchedule{},
-		&helixf_user.User{},
-		&line_model.LineGroup{},
-		&line_model.LineGroupUserMap{},
 	)
 
 	if helixf_env.HelixfEnv == "test" {
@@ -43,7 +66,7 @@ type DbConfig struct {
 }
 
 func (config DbConfig) dsn() string {
-	return "helixf:helixf@tcp(localhost:3306)/" + config.DbName + "?parseTime=true"
+	return "root@tcp(db:3306)/" + config.DbName + "?parseTime=true"
 }
 
 func dsn() string {
