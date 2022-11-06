@@ -64,6 +64,8 @@ func (info *StateInformation) UnmarshalBinary(data []byte) error {
 	return nil
 }
 
+// クライアントアプリから認証リクエストを最初に受け取るハンドラー
+// lineの認証エンドポイント/authorizeに認証リクエスト
 func LineAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	auth_url, err := url.Parse(line.LoginURL)
 
@@ -98,6 +100,7 @@ func LineAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusMovedPermanently)
 }
 
+// line認証後にリダイレクトするハンドラー。トークンのデコード・保存を行う
 func AssertAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	errs, _ := r.URL.Query()["error"]
 
@@ -131,6 +134,7 @@ func AssertAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	// フロントエンドアプリにリダイレクト
 	frontend_url, err := url.Parse(domain.FrontendUrl + "/" + info.RedirectPath + info.UrlQuery)
 	query := frontend_url.Query()
 	query.Set("authorization", tokenResponse.IdToken)
