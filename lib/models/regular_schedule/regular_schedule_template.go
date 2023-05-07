@@ -55,7 +55,6 @@ func (weekday Weekday) toTimeWeekday() time.Weekday {
 }
 
 func (wd *Weekday) String() string {
-	fmt.Println(wd.toTimeWeekday().String())
 	return wd.toTimeWeekday().String()
 }
 

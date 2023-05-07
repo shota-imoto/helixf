@@ -45,9 +45,7 @@ func (client CheckMenberClient) CheckMemberURL() string {
 }
 
 func (client CheckMenberClient) Do() (CheckMemberResponse, error) {
-	fmt.Println("Called check member url request: ", client)
 	req, err := http.NewRequest("GET", client.CheckMemberURL(), nil)
-
 	if err != nil {
 		return CheckMemberResponse{}, nil
 	}

@@ -10,7 +10,7 @@ import (
 type User struct {
 	Id     uint   `gorm:"primaryKey" sql:"type:uint"`
 	Name   string `sql:"type:string"`
-	LineId string `sql:"type:string"`
+	LineId string `sql:"type:string" gorm:"unique"`
 }
 
 type ParseInterface interface {
