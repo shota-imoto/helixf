@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -64,6 +65,8 @@ func (info *StateInformation) UnmarshalBinary(data []byte) error {
 	return nil
 }
 
+// クライアントアプリから認証リクエストを最初に受け取るハンドラー
+// lineの認証エンドポイント/authorizeに認証リクエスト
 func LineAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	auth_url, err := url.Parse(line.LoginURL)
 
@@ -98,6 +101,7 @@ func LineAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusMovedPermanently)
 }
 
+// line認証後にリダイレクトするハンドラー。トークンのデコード・保存を行う
 func AssertAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 	errs, _ := r.URL.Query()["error"]
 
@@ -131,9 +135,58 @@ func AssertAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	// フロントエンドアプリにリダイレクト
 	frontend_url, err := url.Parse(domain.FrontendUrl + "/" + info.RedirectPath + info.UrlQuery)
 	query := frontend_url.Query()
 	query.Set("authorization", tokenResponse.IdToken)
+	query.Set("refresh_token", tokenResponse.RefreshToken)
+
+	frontend_url.RawQuery = query.Encode()
+	w.Header().Set("location", frontend_url.String())
+	w.WriteHeader(http.StatusMovedPermanently)
+}
+
+type RefreshTokenRequestBody struct {
+	RefreshToken string
+	RedirectPath string `json: "redirect_path"`
+	UrlQuery     string `json: "url_query"`
+}
+
+func RefreshAuthenticationHandler(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	var body = RefreshTokenRequestBody{}
+	err = json.Unmarshal(reqBody, &body)
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	client := line.RefreshTokenClient{RefreshToken: body.RefreshToken}
+	tokenResponse, err := client.Do()
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	// フロントエンドアプリにリダイレクト
+	frontend_url, err := url.Parse(domain.FrontendUrl + "/" + body.RedirectPath + body.UrlQuery)
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	query := frontend_url.Query()
+	query.Set("authorization", tokenResponse.IdToken)
+	query.Set("refresh_token", tokenResponse.RefreshToken)
 
 	frontend_url.RawQuery = query.Encode()
 	w.Header().Set("location", frontend_url.String())

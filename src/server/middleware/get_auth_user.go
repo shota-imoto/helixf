@@ -25,7 +25,6 @@ func GetAuthUser(next http.Handler) http.Handler {
 				fmt.Println(err)
 			}
 		}
-		fmt.Println(user)
 
 		ctxWithUser := context.WithValue(r.Context(), AuthorizationUserKey, user)
 		next.ServeHTTP(w, r.WithContext(ctxWithUser))

@@ -66,7 +66,7 @@ type DbConfig struct {
 }
 
 func (config DbConfig) dsn() string {
-	return "root@tcp(db:3306)/" + config.DbName + "?parseTime=true"
+	return "root@tcp(db:3306)/" + config.DbName + "?charset=utf8mb4&parseTime=true"
 }
 
 func dsn() string {

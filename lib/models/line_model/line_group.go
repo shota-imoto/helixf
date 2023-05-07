@@ -12,9 +12,9 @@ import (
 
 type LineGroup struct {
 	Id                       uint   `gorm:"primaryKey" sql:"type:uint" json:"id,int"`
-	GroupId                  string `sql:"type:string,autoIncrement:false" json:"group_id,string"`
-	GroupName                string `sql:"type:string" json:"group_name,string"`
-	PictureUrl               string `sql:"type:string" json:"picture_url,string"`
+	GroupId                  string `sql:"type:string,autoIncrement:false" json:"groupId"`
+	GroupName                string `sql:"type:string" json:"groupName"`
+	PictureUrl               string `sql:"type:string" json:"pictureUrl"`
 	RegularScheduleTemplates []regular_schedule.RegularScheduleTemplate
 }
 

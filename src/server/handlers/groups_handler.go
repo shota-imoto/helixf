@@ -15,14 +15,22 @@ import (
 	"github.com/shota-imoto/helixf/src/server/supports"
 )
 
-func RegisterGroups(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("called Post Groups")
+type RegisterGroupResponse struct {
+	Group line_model.LineGroup `json:"group"`
+}
 
+func RegisterGroups(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("RegisterGroups")
 	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
 
 	// ユーザーがグループに所属しているか確認する
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+
+	if user.LineId == "" {
 		supports.ErrorHandler(w, r, err)
 		return
 	}
@@ -40,7 +48,7 @@ func RegisterGroups(w http.ResponseWriter, r *http.Request) {
 		supports.ErrorHandler(w, r, err)
 		return
 	}
-
+	// ラインデータベース上からグループ情報を取得する
 	group, err := line_service.FindOrCreateGroupByGroupId(client.GroupId)
 
 	if err != nil {
@@ -50,8 +58,15 @@ func RegisterGroups(w http.ResponseWriter, r *http.Request) {
 
 	line_service.JoinGroup(group, user)
 
+	response := RegisterGroupResponse{group}
+	response_json, err := json.Marshal(response)
+
+	if err != nil {
+		supports.ErrorHandler(w, r, err)
+		return
+	}
+	w.Write(response_json)
 	w.WriteHeader(200)
-	return
 }
 
 type GetListGroupsResponse struct {
@@ -60,7 +75,6 @@ type GetListGroupsResponse struct {
 
 func GetListGroups(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
-
 	groups, err := line_service.GetListGroups(user)
 
 	if err != nil {
@@ -89,7 +103,6 @@ type GetGroupRequest struct {
 }
 
 func GetGroup(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("get group")
 	user := r.Context().Value(middleware.AuthorizationUserKey).(helixf_user.User)
 	vars := mux.Vars(r)
 
